@@ -83,7 +83,7 @@ namespace WpfApp1
 
             //BitmapSource bitmapSource = BitmapSource.Create(304, 304, 1,1, PixelFormats.Indexed8, BitmapPalettes.Gray256, byteArrayIn, 304);
 
-            imageI.Source = ImgFromBin(openFileDlg.FileName, 304, 304);
+            imageI.Source = ImgFromBin(openFileDlg.FileName, rows, cols);
         }
         private void runImageParser() {
             Process.Start(EXECUTABLENAME);
