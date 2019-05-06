@@ -21,6 +21,10 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
+        public const string EXECUTABLENAME = "BioCProject.exe";
+        public int rows = -1;
+        public int cols = -1;
+
         Microsoft.Win32.OpenFileDialog openFileDlg;
         public MainWindow()
         {
@@ -40,7 +44,11 @@ namespace WpfApp1
             Console.WriteLine(openFileDlg.FileName);
         }
 
-
+        /// <summary>
+        /// Loads in custom bin image by specifying file name, height, width, and value range.
+        /// </summary>
+        /// <param name="maxValue">Refers to the maximum range for pixel values. Anything higher than maxValue will be truncated.</param>
+        /// <returns></returns>
         public byte[] loadBinImage(string file, int height, int width, int maxValue = 255)
         {
             float[] data = new float[height * width];
@@ -54,6 +62,8 @@ namespace WpfApp1
             byte[] outData = new byte[height * width];
             for (int i = 0; i < outData.Length; i++)
             {
+                //255 is the max value for byte sized data, values over 255 will be truncated and look wrong
+                //this is why maxValue needs to be the largest value in the bin file, so byte values wont be truncated.
                 outData[i] = (byte)(data[i] * (255.0f / maxValue));
             }
             return outData;
@@ -75,6 +85,35 @@ namespace WpfApp1
 
             imageI.Source = ImgFromBin(openFileDlg.FileName, 304, 304);
         }
+        private void runImageParser() {
+            Process.Start(EXECUTABLENAME);
+        }
+
+        private void InputColumns_KeyUp(object sender, KeyEventArgs e) {
+            int parsed = -1;
+            if(int.TryParse(inputColumns.Text,out parsed)) {
+                //success
+                cols = parsed;
+                inputColumns.Text = "" + cols;
+            } else { //failed
+                inputColumns.Text = "";
+            }
+
+
+        }
+        private void InputRows_KeyUp(object sender, KeyEventArgs e) {
+            int parsed = -1;
+            if (int.TryParse(inputRows.Text, out parsed)) {
+                //success
+                cols = parsed;
+                inputRows.Text = ""+  rows;
+            } else { //failed
+                inputRows.Text = "";
+            }
+
+
+        }
+
 
         //works xd
     }
